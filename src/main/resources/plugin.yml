@@ -1,0 +1,10 @@
+name: RevivePlayer
+version: '${project.version}'
+main: net.reviveplayer.Main
+api-version: 1.19
+prefix: RevivePlayer
+author: MitosV
+description: Revive players with this plugin
+website: www.test.com
+softdepend:
+  - PlaceholderAPI
