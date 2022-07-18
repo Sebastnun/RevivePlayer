@@ -1,0 +1,15 @@
+BleedingEvent:
+  "player_chat_menssage": "&6%player_bleeding%&r &cesta sangrando"
+  "player_dead": "&cNo lograron salvar a %player_bleeding%"
+  "time_left": "&cTe quedan &4%timer% &cpara morir"
+  "bleeding_entity": "&4Bleedding %player_bleeding%"
+  "help_message": "&cPuedes usar el comando &l/defeat&r &cpara rendirte"
+
+ReviveEvent:
+  "player_savior": "&aHaz salvado a %player_bleeding%"
+
+Commands:
+  "error_you_arent_bleeding": "&cNo estas herido"
+  "accept_destiny": "&4Aceptaste tu destino"
+  "error_reload": "&cIntenta con el comando &l/revive reload"
+  "reload": "&aSe recargo la configuración de forma correcta"

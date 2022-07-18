@@ -1,0 +1,15 @@
+BleedingEvent:
+  "player_chat_menssage": "&6%player_bleeding%&r &cis bleeding"
+  "player_dead": "&cThey failed to save %player_bleeding%"
+  "time_left": "&cYou have &4%timer% &cleft"
+  "bleeding_entity": "&4Bleedding %player_bleeding%"
+  "help_message": "&cYou can use the &l/defeat&r &ccommand to surrender"
+
+ReviveEvent:
+  "player_savior": "&aYou have saved %player_bleeding%"
+
+Commands:
+  "error_you_arent_bleeding": "&cYou're not bleeding"
+  "accept_destiny": "&4You accepted your fate"
+  "error_reload": "&cTry with the command &l/revive reload"
+  "reload": "&aReload is complete"

@@ -9,9 +9,16 @@
 
 #If you don't enable PlaceHolderAPI, use %name% to set player name
 #You can use & to set colors
-player_chat_menssage: "&6%name%&r is bleeding"
+
+#Set the time in seconds
+time: 120
+
+kill_enable: false
+
+keep_inventory: false
 
 enable_papi: false
 
+lang: "en"
 #Dont modifcate
 ver: 0.1

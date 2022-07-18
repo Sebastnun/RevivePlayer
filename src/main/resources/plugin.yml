@@ -5,6 +5,17 @@ api-version: 1.19
 prefix: RevivePlayer
 author: MitosV
 description: Revive players with this plugin
-website: www.test.com
+commands:
+  defeat:
+    description: Defeat command
+    usage: /<command>
+
+  revive:
+    description: Prinicpal command
+    usage: /<command>
+    permission: reviveplayer.reload
+
 softdepend:
   - PlaceholderAPI
+depend:
+  - PlayerNPC
