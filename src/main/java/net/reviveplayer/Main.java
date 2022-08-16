@@ -1,21 +1,24 @@
 package net.reviveplayer;
 
-import dev.sergiferry.playernpc.api.NPCLib;
 import lombok.Getter;
+import net.minecraft.world.scores.ScoreboardTeam;
+import net.reviveplayer.events.BleedingEvent;
+import net.reviveplayer.events.ReviveEvent;
 import net.reviveplayer.listener.PlayerEvents;
 import net.reviveplayer.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.craftbukkit.v1_19_R1.scoreboard.CraftScoreboard;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
@@ -23,13 +26,22 @@ public final class Main extends JavaPlugin {
     private static Main instance;
     @Getter
     public static boolean usePapi = false;
+    @Getter
     private static int bleedingTime;
+    @Getter
+    private static Scoreboard scoreboard;
+    @Getter
+    private static Team team;
+    @Getter
+    private static Map<Player,Team> oldTeam = new HashMap<>();
 
 
     @Override
     public void onEnable() {
         instance = this;
+        scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
         setUpConfig();
+        Util.loadMessages();
         start();
     }
 
@@ -41,12 +53,62 @@ public final class Main extends JavaPlugin {
         bleedingTime = this.getConfig().getInt("time");
         //checkPapi();
         registerListener();
-        Util.loadMessages();
+        newTeam();
     }
 
     public void newReloadConfig(){
         this.reloadConfig();
+        Util.loadMessages();
         bleedingTime = this.getConfig().getInt("time");
+    }
+
+    public static void addPlayerTeam(Player player){
+
+        player.setDisplayName(Main.format(Util.getMessage("chat_prefix") + player.getName()));
+        scoreboard.getTeams().forEach((team) ->{
+            if (team.hasPlayer(player) || team.hasEntry(player.getUniqueId().toString())){
+                oldTeam.put(player,team);
+                team.removePlayer(player);
+                team.removeEntry(player.getUniqueId().toString());
+            }
+        });
+        team.addEntry(player.getUniqueId().toString());
+        team.addPlayer(player);
+    }
+
+    public static void removePlayerTeam(Player player){
+        team.removeEntry(player.getUniqueId().toString());
+        player.setDisplayName(Main.format(player.getName()));
+        team.removePlayer(player);
+
+        oldTeam.forEach((p,team) ->{
+            if (p.equals(player)){
+                team.addPlayer(player);
+                team.removeEntry(player.getUniqueId().toString());
+            }
+        });
+    }
+
+    public static void removePlayerTeam(OfflinePlayer player){
+        team.removeEntry(player.getUniqueId().toString());
+        team.removePlayer(player);
+
+        oldTeam.forEach((p,team) ->{
+            if (p.equals(player)){
+                team.addPlayer(player);
+                team.removeEntry(player.getUniqueId().toString());
+            }
+        });
+    }
+
+    private void newTeam(){
+        for (Team t : scoreboard.getTeams()) if (t.getName().equals("bleeding_team")){
+            team = scoreboard.getTeam("bleeding_team");
+            return;
+        }
+        team = scoreboard.registerNewTeam("bleeding_team");
+        team.setColor(ChatColor.RED);
+
     }
 
     public void setUpConfig(){
@@ -65,9 +127,10 @@ public final class Main extends JavaPlugin {
     }
 
     private void enableMenssage(){
-        Bukkit.getConsoleSender().sendMessage(format("&c-------------------------------------"));
-        Bukkit.getConsoleSender().sendMessage(format("&c------&4 Revive Player is &l&eloaded&c-------"));
-        Bukkit.getConsoleSender().sendMessage(format("&c-------------------------------------"));
+        Bukkit.getConsoleSender().sendMessage(format("&c------------------------------------"));
+        Bukkit.getConsoleSender().sendMessage(format("&c------&4 Revive Player is &l&eloaded&c------"));
+        Bukkit.getConsoleSender().sendMessage(format("&c-----------------&av:"+this.getConfig().getString("ver")+"&c------------------"));
+        Bukkit.getConsoleSender().sendMessage(format("&c------------------------------------"));
     }
 
 
@@ -85,14 +148,20 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if (!BleedingEvent.getBleedingPlayers().isEmpty()){
+            for (Player player : BleedingEvent.getBleedingPlayers().keySet()){
+                if (player.isOnline())
+                    ReviveEvent.notSave(player);
+            }
+        }
+        if (!team.getPlayers().isEmpty()){
+            team.getPlayers().forEach(Main::removePlayerTeam);
+        }
+
     }
 
 
     public static String format(String text){return ChatColor.translateAlternateColorCodes('&',text);}
 
 
-    public static int getBleedingTime() {
-        return bleedingTime;
-    }
 }

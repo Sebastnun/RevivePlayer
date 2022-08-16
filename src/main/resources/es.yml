@@ -1,3 +1,4 @@
+#You can use & to set colors
 BleedingEvent:
   "player_chat_menssage": "&6%player_bleeding%&r &cesta sangrando"
   "player_dead": "&cNo lograron salvar a %player_bleeding%"
@@ -13,3 +14,6 @@ Commands:
   "accept_destiny": "&4Aceptaste tu destino"
   "error_reload": "&cIntenta con el comando &l/revive reload"
   "reload": "&aSe recargo la configuración de forma correcta"
+
+Chat:
+  "chat_prefix": "&c[Bleeding] &r"

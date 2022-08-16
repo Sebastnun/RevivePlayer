@@ -15,7 +15,3 @@ commands:
     usage: /<command>
     permission: reviveplayer.reload
 
-softdepend:
-  - PlaceholderAPI
-depend:
-  - PlayerNPC

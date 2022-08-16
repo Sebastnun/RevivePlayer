@@ -19,7 +19,7 @@ public class Command implements CommandExecutor {
             Bukkit.getConsoleSender().sendMessage(Main.format("&cYou arent player"));
             return false;
         }else {
-            if (!BleedingEvent.bleedingPlayers.containsKey(player)){
+            if (!BleedingEvent.getBleedingPlayers().containsKey(player)){
                 player.sendMessage(Main.format(Util.getMessage("error_you_arent_bleeding")));
             }else {
                 player.sendMessage(Main.format(Util.getMessage("accept_destiny")));

@@ -7,18 +7,24 @@
 #88     `8b  "8b,   ,aa    `8b,d8'    88    `8b,d8'    "8b,   ,aa     88           88  88,    ,88    `8b,d8'    "8b,   ,aa  88
 #88      `8b  `"Ybbd8"'      "8"      88      "8"       `"Ybbd8"'     88           88  `"8bbdP"Y8      Y88'      `"Ybbd8"'  88
 
-#If you don't enable PlaceHolderAPI, use %name% to set player name
-#You can use & to set colors
+
 
 #Set the time in seconds
 time: 120
 
+#If set to true, the /kill command will kill the player instantly, but if set to false, the player will bleed.
 kill_enable: false
 
-keep_inventory: false
+#Set the player's remaining life
+bleeding_health_level: 6
 
-enable_papi: false
+#Set the player's remaining food
+bleeding_food_level: 6
 
+#Set the language, you can add your own by copying and editing the "en" file in the lang folder, put the name of the file
+#Spanish (es) and English (en) languages are now available
 lang: "en"
-#Dont modifcate
-ver: 0.1
+
+
+#Don't modify
+ver: "1.0"
